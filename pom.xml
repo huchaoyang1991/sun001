@@ -67,6 +67,13 @@
       <artifactId>dom4j</artifactId>
       <version>1.6.1</version>
     </dependency>
+    <!-- jxl获取excel驱动 -->
+    <dependency>
+      <groupId>net.sourceforge.jexcelapi</groupId>
+      <artifactId>jxl</artifactId>
+      <version>2.6.12</version>
+    </dependency>
+
 
   </dependencies>
   <build>
