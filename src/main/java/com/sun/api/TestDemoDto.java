@@ -1,34 +1,27 @@
 package com.sun.api;
 
-import com.sun.util.ExcelData;
+import com.alibaba.fastjson.JSON;
+import com.sun.dto.CommonResponse;
+import com.sun.dto.CommonResponseData;
 import com.sun.util.HttpService;
-import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 /**
  * Created by Administrator on 2017/3/14.
  */
-public class TestDemo {
+public class TestDemoDto {
     CloseableHttpClient httpClient= HttpClients.createDefault();
-    @BeforeClass
-    public void beforeClass(){
-
-    }
-    @Test(testName = "测试基本get和post方法")
+    @Test(testName = "json对象解析")
     public void main() throws Exception{
-        CloseableHttpClient httpClient= HttpClients.createDefault();
+
         //添加post请求的url
         HttpPost httpPost=new HttpPost("https://member.pinganfang.com/v2/api/web/user/login");
         //HttpGet httpGet=new HttpGet("url");
@@ -45,20 +38,13 @@ public class TestDemo {
         response=httpClient.execute(httpPost);
         //response=httpClient.execute(httpGet);
         //打印服务器返回body信息
-        System.out.println(httpService.responseBody(response.getEntity()));
-        //打印服务器返回状态
-        System.out.println(response.getStatusLine());
-        //打印服务器的headers信息
-        for (Header head:response.getAllHeaders()) {
-            System.out.println(head);
-        }
+        String body=httpService.responseBody(response.getEntity());
+        // System.out.println(body);
+        //把返回的JSON信息解析为java对象
+        String status= JSON.parseObject(body, CommonResponse.class).getData();
+        //把返回的JSON信息中的data数组解析为java对象
+        String str= JSON.parseObject(status, CommonResponseData.class).getToken();
+        System.out.println(str);
     }
-    @DataProvider
-    public Iterator<Object[]> data() throws Exception{
-        return (Iterator<Object[]>)new ExcelData("ExcelTest","testB");
-    }
-    @AfterClass
-    public void afterClass() throws Exception{
-        httpClient.close();
-    }
+
 }
