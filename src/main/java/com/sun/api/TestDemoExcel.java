@@ -13,7 +13,7 @@ import java.util.Map;
 
 public class TestDemoExcel {
 
-    @Test(dataProvider = "db1")
+    @Test(testName = "测试数据驱动加载",dataProvider = "db1")
     public void ts(Map<String, String> data) throws Exception{
         System.out.println(data.get("part1"));
         System.out.println("=====over=====");
