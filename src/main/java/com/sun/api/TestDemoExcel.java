@@ -13,16 +13,17 @@ import java.util.Map;
 
 public class TestDemoExcel {
 
-    @Test(testName = "测试数据驱动加载",dataProvider = "db1")
+    @Test(testName = "测试数据驱动加载",dataProvider = "db2")
     public void ts(Map<String, String> data) throws Exception{
         System.out.println(data.get("part1"));
+        System.out.println(data.keySet());
         System.out.println("=====over=====");
         System.out.println("");
     }
 
-    @DataProvider(name = "db1")
+    @DataProvider(name = "db2")//db1的名字必须和Excel的文件名称一致
     public Iterator<Object[]> data() throws Exception{
-        return (Iterator<Object[]>)new ExcelData("ExcelTest","testB");
+        return new ExcelData("db2");
     }
 
 }
