@@ -22,16 +22,14 @@ public class ExcelData implements Iterator<Object[]> {
     * @param filepath Excel文件名
     * @param casename用例名
      */
-    public ExcelData(String filepath, String casename) {
+    public ExcelData(String fileName) {
         try {
-            String ss="D:\\workspace\\sun001\\src\\main\\resources\\dataDriver\\ExcelTest.xls";
-            File file = new File(ss);
-            book = Workbook.getWorkbook(new File(ss));
-                    //(file.getCanonicalPath()
-                    //+ "\\resources\\"
-                    //+ ss.replaceAll("\\.", Matcher.quoteReplacement("\\"))
-                    //+ filepath + ".xls"));
-            this.sheet = book.getSheet(casename);
+            //动态获取本地excel文件
+            String filePath=new File("./").getCanonicalPath()+"\\src\\main\\resources\\dataDriver\\"+fileName+".xls";
+            //读取格式为excel的文件
+            book = Workbook.getWorkbook(new File(filePath));
+            //获取sheet1表（默认）
+            this.sheet = book.getSheet("sheet1");
             this.rowNum = sheet.getRows();
 
             Cell[] c = sheet.getRow(0);
