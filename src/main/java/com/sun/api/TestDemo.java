@@ -26,7 +26,7 @@ public class TestDemo {
     @Test(testName = "测试基本get和post方法")
     public void main() throws Exception{
         CloseableHttpClient httpClient= HttpClients.createDefault();
-        HttpService httpService=null;//用于转换编码
+        HttpService httpService=new HttpService();//用于转换编码
         HttpPost httpPost=null;//接收post请求信息
         CloseableHttpResponse response=null;//接受服务器返回信息
         //添加post请求的url
@@ -36,8 +36,15 @@ public class TestDemo {
         Map<String,String> param= new HashMap<String,String>();
         param.put("mobile", "18601669325");
         param.put("password", "647871b841381eec91b609e217a621fa");
+        System.out.println(param.size());
         //将map转换为formData
-        HttpEntity httpEntity=httpService.addParam(param);
+        HttpEntity httpEntity = null;
+        try {
+            httpEntity = httpService.addParam(param);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         //将参数传入http请求对象
         httpPost.setEntity(httpEntity);
         //接收服务器的返回信息
