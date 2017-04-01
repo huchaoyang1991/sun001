@@ -1,30 +1,32 @@
-package com.sun.api;
+package com.sun.service.impl;
 
+import com.sun.common.UserInfo;
+import com.sun.service.TestService;
 import com.sun.util.HttpService;
-import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
+import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by Administrator on 2017/3/14.
+ * Created by Administrator on 2017/4/1.
  */
-public class TestDemo {
+@Service
+public class TestServiceImpl implements TestService {
     CloseableHttpClient httpClient= HttpClients.createDefault();
-    @BeforeClass
-    public void beforeClass(){
+    private  HttpService httpService =new HttpService();//用于转换编码
+    private  HttpPost httpPost;//接收post请求信息
+    private CloseableHttpResponse response;//接受服务器返回信息
 
-    }
-    @Test(testName = "测试基本get和post方法")
-    public void main() throws Exception{
+    public void login(String username, String password) throws Exception{
+        username= UserInfo.USERNAME;
+        password=UserInfo.PASSWORD;
+
         CloseableHttpClient httpClient= HttpClients.createDefault();
         HttpService httpService=new HttpService();//用于转换编码
         HttpPost httpPost=null;//接收post请求信息
@@ -34,9 +36,8 @@ public class TestDemo {
         //HttpGet httpGet=new HttpGet("url");
         //添加post请求的formdata
         Map<String,String> param= new HashMap<String,String>();
-        param.put("mobile", "18601669325");
-        param.put("password", "647871b841381eec91b609e217a621fa");
-        System.out.println(param.size());
+        param.put("mobile", username);
+        param.put("password", password);
         //将map转换为formData
         HttpEntity httpEntity = null;
         try {
@@ -44,24 +45,15 @@ public class TestDemo {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         //将参数传入http请求对象
         httpPost.setEntity(httpEntity);
         //接收服务器的返回信息
 
         response=httpClient.execute(httpPost);
-        //response=httpClient.execute(httpGet);
-        //打印服务器返回body信息，并将实体类转换为String
-        System.out.println(httpService.responseBody(response.getEntity()));
-        //打印服务器返回状态
         System.out.println(response.getStatusLine());
-        //打印服务器的headers信息
-        for (Header head:response.getAllHeaders()) {
-            System.out.println(head);
-        }
+        return ;
     }
-    @AfterClass
-    public void afterClass() throws Exception{
-        httpClient.close();
+    public void login() throws Exception{
+        this.login(UserInfo.USERNAME,UserInfo.PASSWORD);
     }
 }
